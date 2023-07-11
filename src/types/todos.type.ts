@@ -1,5 +1,7 @@
 // TODO: Put a real interfaces here
 
 export interface ITodo {
-  data: string;
+  id: string;
+  title: string;
+  description: string;
 }

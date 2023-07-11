@@ -1,13 +1,33 @@
-import { User } from "../entities/User";
-import { Repository } from "typeorm";
-import AppDataSource from "../config/database";
+import { ITodo } from "../types/todos.type";
+import { Todo } from "../entities/Todo";
 
 export default class TodoService {
-  constructor(private repo: typeof AppDataSource) {}
-  async create(email: string) {
-    // const user = this.repo.manager.create({ email });
-    const user = new User();
-    user.email = email;
-    return this.repo.manager.save(user);
+  async getAllTodos() {
+    const todos: ITodo[] = await Todo.find();
+    return todos;
+  }
+  async getTodoById(id: string) {
+    const todo = await Todo.find({ where: { id } });
+
+    return todo;
+  }
+  async createTodo(todoData: Todo) {
+    const todo = await Todo.create(todoData);
+    return todo.save();
+  }
+  async updateTodo(id: string, newBody: Todo) {
+    const findTodo = await Todo.find({ where: { id } });
+    if (!findTodo) {
+      throw new Error("todo not found");
+    }
+    Object.assign(findTodo, newBody);
+    return Todo.save(findTodo);
+  }
+  async removeTodo(id: string) {
+    const todo = await Todo.find({ where: { id } });
+    if (!todo) {
+      throw new Error("todo not found");
+    }
+    return Todo.remove(todo);
   }
 }

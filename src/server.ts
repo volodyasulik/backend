@@ -3,14 +3,12 @@ import express from "express";
 import "dotenv/config";
 
 import AppRouter from "./routes";
-import AppDataSource from "./config/database";
+import connectDB from "./config/database";
 
 const app = express();
 const router = new AppRouter(app);
 // Connect to MongoDB
-AppDataSource.initialize()
-  .then(() => console.log("Connection success"))
-  .catch((err) => "Erro!");
+connectDB();
 
 // Express configuration
 app.set("port", process.env.PORT || 4200);
