@@ -14,29 +14,19 @@ function getSSLConfig(env: string) {
   return configs[env];
 }
 
-const connectDB = async () => {
-  try {
-    const AppDataSource = new DataSource({
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      logging: ["query", "error"],
-      type: "postgres",
+const AppDataSource = new DataSource({
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  logging: ["query", "error"],
+  type: "postgres",
 
-      migrations: ["dist/migrations/**/*.{ts,js}"],
-      subscribers: ["src/subscriber/**/*.ts"],
-      database: process.env.POSTGRES_DB,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      // ssl: getSSLConfig(process.env.SERVER_MODE as string),
-      synchronize: true,
-    });
-    await AppDataSource.initialize();
-    console.log("MongoDB Connected...");
-  } catch (err: any) {
-    console.error(err.message);
-    // Exit process with failure
-    process.exit(1);
-  }
-};
+  migrations: ["dist/migrations/**/*.{ts,js}"],
+  subscribers: ["src/subscriber/**/*.ts"],
+  database: process.env.POSTGRES_DB,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  // ssl: getSSLConfig(process.env.SERVER_MODE as string),
+  synchronize: true,
+});
 
-export default connectDB;
+export default AppDataSource;

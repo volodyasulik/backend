@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import TodoService from "../services/todo.service";
 import { User } from "../entities/User";
-import { getRepository, Repository, getConnection } from "typeorm";
+import AppDataSource from "../config/database";
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
@@ -20,6 +20,5 @@ export class TodoController {
   }
 }
 
-// const userRepository: Repository<User> = getRepository(User);
-const todoController = new TodoController(new TodoService());
+const todoController = new TodoController(new TodoService(AppDataSource));
 export default todoController;
